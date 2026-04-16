@@ -2,6 +2,10 @@
 
 SaversSDK provides a bridge between WKWebView and native features (Maps, Dial Pad, Browser), plus utilities for device ID, session management, location, and URL generation.
 
+Repository: `https://github.com/SaversApp/hosted-app-ios-sdk-distribution.git`
+
+Package name: `SaversSDK`
+
 ## Features
 - Web-to-native message handling via WKWebView
 - Apple Maps navigation
@@ -36,7 +40,7 @@ Key modules:
 
 ```swift
 dependencies: [
-  .package(url: "https://github.com/MADRewards/hosted-app-ios-sdk.git", from: "1.0.0")
+  .package(url: "https://github.com/SaversApp/hosted-app-ios-sdk-distribution.git", from: "1.0.0")
 ],
 targets: [
   .target(
@@ -63,7 +67,7 @@ end
 platform :ios, '13.0'
 use_frameworks!
 target 'YourApp' do
-  pod 'SaversSDK', :git => 'https://github.com/MADRewards/hosted-app-ios-sdk.git', :tag => '1.0.0'
+  pod 'SaversSDK', :git => 'https://github.com/SaversApp/hosted-app-ios-sdk-distribution.git', :tag => '1.0.0'
 end
 ```
 
