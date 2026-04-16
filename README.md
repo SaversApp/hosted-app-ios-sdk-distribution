@@ -1,10 +1,10 @@
-# SaversSDK iOS Native Library
+# SaversAppSDK iOS Native Library
 
-SaversSDK provides a bridge between WKWebView and native features (Maps, Dial Pad, Browser), plus utilities for device ID, session management, location, and URL generation.
+SaversAppSDK provides a bridge between WKWebView and native features (Maps, Dial Pad, Browser), plus utilities for device ID, session management, location, and URL generation.
 
 Repository: `https://github.com/SaversApp/hosted-app-ios-sdk-distribution.git`
 
-Package name: `SaversSDK`
+Package name: `SaversAppSDK`
 
 ## Features
 - Web-to-native message handling via WKWebView
@@ -18,8 +18,8 @@ Package name: `SaversSDK`
 - Simple logging via `Logger` (prints to console)
 
 ## Project Layout
-- Library: `SaversSDK`
-- Demo app: `SaversSDKDemo`
+- Library: `SaversAppSDK`
+- Demo app: `SaversAppSDKDemo`
 
 Key modules:
 - Webview bridge: messageHandler.swift
@@ -35,7 +35,7 @@ Key modules:
 ## Installation
 
 ### Swift Package Manager (Recommended)
-- Xcode: File → Add Packages… → enter your repository URL → select a version tag (e.g., 1.0.0) → Add Package → add SaversSDK to your app target.
+- Xcode: File → Add Packages… → enter your repository URL → select a version tag (e.g., 1.0.0) → Add Package → add SaversAppSDK to your app target.
 - Package.swift example:
 
 ```swift
@@ -45,7 +45,7 @@ dependencies: [
 targets: [
   .target(
     name: "YourApp",
-    dependencies: ["SaversSDK"]
+    dependencies: ["SaversAppSDK"]
   )
 ]
 ```
@@ -57,7 +57,7 @@ targets: [
 platform :ios, '13.0'
 use_frameworks!
 target 'YourApp' do
-  pod 'SaversSDK', '~> 1.0'
+  pod 'SaversAppSDK', '~> 1.0'
 end
 ```
 
@@ -67,20 +67,20 @@ end
 platform :ios, '13.0'
 use_frameworks!
 target 'YourApp' do
-  pod 'SaversSDK', :git => 'https://github.com/SaversApp/hosted-app-ios-sdk-distribution.git', :tag => '1.0.0'
+  pod 'SaversAppSDK', :git => 'https://github.com/SaversApp/hosted-app-ios-sdk-distribution.git', :tag => '1.0.0'
 end
 ```
 
 Notes:
 - iOS 13+ minimum due to CryptoKit.
-- After installation, import with `import SaversSDK`.
+- After installation, import with `import SaversAppSDK`.
 
 ## Getting Started
 
 ### Integrate the Library
-- Open `SaversSDK.xcodeproj` and add it to your workspace or project.
-- Add target dependency on `SaversSDK` to your app target.
-- Embed `SaversSDK.framework` into your app target (Embed & Sign).
+- Open `SaversAppSDK.xcodeproj` and add it to your workspace or project.
+- Add target dependency on `SaversAppSDK` to your app target.
+- Embed `SaversAppSDK.framework` into your app target (Embed & Sign).
 
 ### iOS Setup
 - Permissions (add keys and descriptions in Info.plist):
@@ -107,9 +107,9 @@ Example:
 
 ### Initialize the SDK
 ```swift
-import SaversSDK
+import SaversAppSDK
 
-try SaversSDK.initialize(
+try SaversAppSDK.initialize(
   apiKey: "YOUR_API_KEY",
   encryptionKey: "YOUR_ENCRYPTION_KEY_BASE64", // base64 of 32 bytes (256-bit)
   pRefCode: "YOUR_P_REF_CODE",
@@ -122,7 +122,7 @@ Configure a `WKWebView` with the `savers` message handler and forward messages t
 
 ```swift
 import WebKit
-import SaversSDK
+import SaversAppSDK
 
 final class ExampleViewController: UIViewController, WKScriptMessageHandler {
   private var webView: WKWebView!
@@ -250,7 +250,7 @@ Location / coordinates:
 Notes:
 - authType is optional; defaults to 'PHONE' | also 'EMAIL' | 'USERNAME'
 - sessionId is optional; when nil, the SDK uses its stored session id
-- requires encryptionKey (base64 32-byte) and pRefCode initialized via SaversSDK.initialize
+- requires encryptionKey (base64 32-byte) and pRefCode initialized via SaversAppSDK.initialize
 - the SDK automatically fetches a nonce during URL generation using profile.userId and pRefCode
 
 ## Device & Session Management
@@ -329,16 +329,16 @@ Logs are printed via `Logger` and appear in the device/simulator console. Exampl
 - `[Demo] Loading HTML into WKWebView`
 
 ## Demo App
-Open `SaversSDK.xcodeproj` and run the `SaversSDKDemo` scheme.
+Open `SaversAppSDK.xcodeproj` and run the `SaversAppSDKDemo` scheme.
 
 CLI build example:
 ```bash
-xcodebuild -project SaversSDK.xcodeproj -scheme SaversSDKDemo -configuration Debug -destination "platform=iOS Simulator,name=iPhone 15" CODE_SIGNING_ALLOWED=NO build
+xcodebuild -project SaversAppSDK.xcodeproj -scheme SaversAppSDKDemo -configuration Debug -destination "platform=iOS Simulator,name=iPhone 15" CODE_SIGNING_ALLOWED=NO build
 ```
 
 ## Notes
 - Ensure WKWebView includes the `savers` message handler.
-- Provide valid keys in `SaversSDK.initialize` for URL generation (apiKey, encryptionKey base64, pRefCode, authMode).
+- Provide valid keys in `SaversAppSDK.initialize` for URL generation (apiKey, encryptionKey base64, pRefCode, authMode).
 - Device location depends on permissions and platform availability (simulator may require a simulated location).
 - Requirements: iOS 13+; encryption uses AES‑256‑GCM with a base64‑encoded 32‑byte key.
 

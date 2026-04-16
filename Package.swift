@@ -2,21 +2,21 @@
 import PackageDescription
 
 let package = Package(
-    name: "SaversSDK",
+    name: "SaversAppSDK",
     platforms: [
         .iOS(.v13)
     ],
     products: [
         .library(
-            name: "SaversSDK",
-            targets: ["SaversSDK"]
+            name: "SaversAppSDK",
+            targets: ["SaversAppSDK"]
         )
     ],
     targets: [
         .binaryTarget(
-            name: "SaversSDK",
-            url: "https://faisalwahab.com/SaverAppIosSDK/SaversSDK.xcframework.zip",
-            checksum: "f181b87a3f694b5d3fd746a547c027a563738d9df0486684b71d511d64e98d4c"
+            name: "SaversAppSDK",
+            url: "https://faisalwahab.com/SaverAppIosSDK/SaversAppSDK.xcframework.zip",
+            checksum: "96d66be95bd96f87859a06bb5984a1c0951353940800cd41a9c6cfd9098bfe4d"
         )
     ]
 )
