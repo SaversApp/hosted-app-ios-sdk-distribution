@@ -35,12 +35,12 @@ Key modules:
 ## Installation
 
 ### Swift Package Manager (Recommended)
-- Xcode: File → Add Packages… → enter your repository URL → select a version tag (e.g., 1.0.0) → Add Package → add SaversAppSDK to your app target.
+- Xcode: File → Add Packages… → enter your repository URL → select a version tag (e.g., 1.0.2) → Add Package → add SaversAppSDK to your app target.
 - Package.swift example:
 
 ```swift
 dependencies: [
-  .package(url: "https://github.com/SaversApp/hosted-app-ios-sdk-distribution.git", from: "1.0.0")
+  .package(url: "https://github.com/SaversApp/hosted-app-ios-sdk-distribution.git", from: "1.0.2")
 ],
 targets: [
   .target(
@@ -67,7 +67,7 @@ end
 platform :ios, '13.0'
 use_frameworks!
 target 'YourApp' do
-  pod 'SaversAppSDK', :git => 'https://github.com/SaversApp/hosted-app-ios-sdk-distribution.git', :tag => '1.0.0'
+  pod 'SaversAppSDK', :git => 'https://github.com/SaversApp/hosted-app-ios-sdk-distribution.git', :tag => '1.0.2'
 end
 ```
 
