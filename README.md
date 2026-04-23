@@ -2,7 +2,7 @@
 
 SaversAppSDK provides a bridge between WKWebView and native features (Maps, Dial Pad, Browser), plus utilities for device ID, session management, location, and URL generation.
 
-Repository: `https://github.com/SaversApp/hosted-app-ios-sdk-distribution.git`
+Repository: `https://github.com/SaversApp/hosted-app-ios-sandbox-sdk-distribution.git`
 
 Package name: `SaversAppSDK`
 
@@ -15,6 +15,7 @@ Package name: `SaversAppSDK`
 - Session management
 - Location provider with permission handling and fallbacks
 - URL generation for Savers platform payloads
+- Runtime environment selection via `SaversEnvironment`
 - Simple logging via `Logger` (prints to console)
 
 ## Project Layout
@@ -35,12 +36,12 @@ Key modules:
 ## Installation
 
 ### Swift Package Manager (Recommended)
-- Xcode: File → Add Packages… → enter your repository URL → select a version tag (e.g., 1.0.2) → Add Package → add SaversAppSDK to your app target.
+- Xcode: File → Add Packages… → enter your repository URL → select a version tag (e.g., 1.0.0) → Add Package → add SaversAppSDK to your app target.
 - Package.swift example:
 
 ```swift
 dependencies: [
-  .package(url: "https://github.com/SaversApp/hosted-app-ios-sdk-distribution.git", from: "1.0.2")
+  .package(url: "https://github.com/SaversApp/hosted-app-ios-sandbox-sdk-distribution.git", from: "1.0.0")
 ],
 targets: [
   .target(
@@ -51,7 +52,7 @@ targets: [
 ```
 
 ### CocoaPods
-<!-- - Podfile (published to trunk):
+- Podfile (published to trunk):
 
 ```ruby
 platform :ios, '13.0'
@@ -59,7 +60,7 @@ use_frameworks!
 target 'YourApp' do
   pod 'SaversAppSDK', '~> 1.0'
 end
-``` -->
+```
 
 - Podfile (direct from Git tag):
 
@@ -67,7 +68,7 @@ end
 platform :ios, '13.0'
 use_frameworks!
 target 'YourApp' do
-  pod 'SaversAppSDK', :git => 'https://github.com/SaversApp/hosted-app-ios-sdk-distribution.git', :tag => '1.0.2'
+  pod 'SaversAppSDK', :git => 'https://github.com/SaversApp/hosted-app-ios-sandbox-sdk-distribution.git', :tag => '1.0.0'
 end
 ```
 
@@ -113,8 +114,20 @@ try SaversAppSDK.initialize(
   apiKey: "YOUR_API_KEY",
   encryptionKey: "YOUR_ENCRYPTION_KEY_BASE64", // base64 of 32 bytes (256-bit)
   pRefCode: "YOUR_P_REF_CODE",
-  authMode: "PHONE" // or "EMAIL" | "USERNAME"
+  authMode: "PHONE", // or "EMAIL" | "USERNAME"
+  environment: .production // defaults to .production
 )
+```
+
+Environment selection is runtime-driven:
+- `.production` is the default when no environment is provided
+- `.sandbox` is available for non-production flows
+- the SDK now switches its web URL and default data-layer environment from the initialized `SaversEnvironment`
+
+Inspect the active environment from Swift:
+
+```swift
+let activeEnvironment = SaversAppSDK.currentEnvironment
 ```
 
 ### WKWebView Bridge
@@ -201,7 +214,9 @@ The demo uses this simple HTML to trigger native actions via the iOS WKWebView b
 ```
 
 ### URL Generation
-Generate a Savers URL that encodes profile, screen, device info, and session payload. If coordinates are set via `LocationManager`, they are included automatically.
+Generate a Savers URL that encodes profile, screen, device info, and session payload. If coordinates are set via `LocationManager`, they are included automatically. The generated host follows the initialized SDK environment:
+- `.production` -> `https://m.saversapp.com/`
+- `.sandbox` -> `https://testm.saversapp.com/`
 
 ```swift
 let session = SessionManager()
@@ -298,10 +313,10 @@ OpenBrowser.open("https://www.example.com", presenter: self)
 ```
 
 ## Networking (ApiService)
-Use the built-in data layer with interceptors and caching strategies.
+Use the built-in data layer with interceptors and caching strategies. `ApiService()` uses the environment selected during `SaversAppSDK.initialize(...)` by default, or you can override it per instance.
 
 ```swift
-let api = SaversData.ApiService() // defaults to production environment
+let api = SaversData.ApiService() // uses current SDK environment
 api.getOnBoarding { res in
   if res.status, let data = res.data {
     // data.day?.images / data.night?.images
@@ -310,6 +325,11 @@ api.getOnBoarding { res in
     print("error: \(res.message)")
   }
 }
+```
+
+```swift
+let sandboxApi = SaversData.ApiService(saversEnvironment: .sandbox)
+let legacySandboxApi = SaversData.ApiService(environment: .sandbox)
 ```
 
 Cache strategies:
@@ -338,7 +358,7 @@ xcodebuild -project SaversAppSDK.xcodeproj -scheme SaversAppSDKDemo -configurati
 
 ## Notes
 - Ensure WKWebView includes the `savers` message handler.
-- Provide valid keys in `SaversAppSDK.initialize` for URL generation (apiKey, encryptionKey base64, pRefCode, authMode).
+- Provide valid keys in `SaversAppSDK.initialize` for URL generation (apiKey, encryptionKey base64, pRefCode, authMode, and optional environment).
 - Device location depends on permissions and platform availability (simulator may require a simulated location).
 - Requirements: iOS 13+; encryption uses AES‑256‑GCM with a base64‑encoded 32‑byte key.
 

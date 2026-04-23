@@ -15,8 +15,8 @@ let package = Package(
     targets: [
         .binaryTarget(
             name: "SaversAppSDK",
-            url: "https://sdk.saversapp.com/ios/1.0.2/SaversAppSDK.xcframework.zip",
-            checksum: "96d66be95bd96f87859a06bb5984a1c0951353940800cd41a9c6cfd9098bfe4d"
+            url: "https://sdk.saversapp.com/ios/1.0.3/SaversAppSDK.xcframework.zip",
+            checksum: "77e67c94a2d3dc3fcb7af3f3db163006e02d57ae60d0c46d62dda548647b63d6"
         )
     ]
 )
